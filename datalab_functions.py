@@ -231,13 +231,16 @@ class Network(object):
                 for item in node_list:
                     # parse arc information
                     info = item.split(";")  
-                    self.add_node(info[0])
-                    new_node = self.get_node(info[0])
+                    try: # Check if node is already defined
+                        new_node = self.get_node(info[0])
+                    except NetworkError: # if not add it and get it
+                        self.add_node(info[0])
+                        new_node = self.get_node(info[0])
 
                     # get destination node object and link it to source node
                     self.join_nodes(source_node, new_node, info[1])
 
-       
+                    # delete the placeholder command below when you start writing your code
                     
 
 
