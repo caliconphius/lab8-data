@@ -276,8 +276,32 @@ class NetworkNZ(Network):
         # os.path.isdir
         # ___
 
-        # **delete the placeholder command below once you have written your code**
-        pass
+        # get all the folders in teh directions
+        folders = glob(directory + os.sep + '*')
+
+        # look through all the items in the folder
+        for item in folders:
+            # for the connections folder put all the arcs in a list
+            if item == 'nz_network\\connections':
+                connections = glob(item + os.sep + '*.txt')
+            else:
+                # otherwise get the node name from the file and add it to the networks node list with the location as the nodes value
+                node_name = np.genfromtxt(item + os.sep + 'station_data.txt',delimiter=': ',usecols=(1),skip_footer=2,dtype='str')
+                node_location = np.genfromtxt(item + os.sep + 'station_data.txt',delimiter=': ',usecols=1,skip_header=1)
+                self.add_node(node_name,value=node_location)
+
+        # loop through all the arcs in connections joining the nodes in the network together
+        for file in connections:
+            # get the file name from the path
+            arc = file.split(os.sep)[-1]
+            # collect nodes from the file name
+            node_from = self.get_node(arc[0:3])
+            node_to = self.get_node(arc[4:7]) 
+            
+            # get the capacities from the txt file
+            capacities = np.genfromtxt(file,skip_header=1,usecols=1)
+
+            self.join_nodes(node_from, node_to, np.mean(capacities))
 
     # this method is complete, do not modify
     def show(self, save=None):
