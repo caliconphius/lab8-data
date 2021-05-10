@@ -282,7 +282,7 @@ class NetworkNZ(Network):
         # look through all the items in the folder
         for item in folders:
             # for the connections folder put all the arcs in a list
-            if item == 'nz_network\\connections':
+            if item == (directory+os.sep+'connections'):
                 connections = glob(item + os.sep + '*.txt')
             else:
                 # otherwise get the node name from the file and add it to the networks node list with the location as the nodes value
